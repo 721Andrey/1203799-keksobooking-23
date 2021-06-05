@@ -1,28 +1,3 @@
-function getRandomNumber(min, max) {
-  const lower = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
-  const upper = Math.floor(Math.max(Math.abs(min), Math.abs(max)));
-  const result = Math.random() * (upper - lower + 1) + lower;
-  return Math.floor(result);
-}
-
-function getRandomFloat(min, max, digits = 1) {
-  const lower = Math.min(Math.abs(min), Math.abs(max));
-  const upper = Math.max(Math.abs(min), Math.abs(max));
-  const result = Math.random() * (upper - lower) + lower;
-  return result.toFixed(digits);
-}
-
-const AVATARS = [
-  'img/avatars/user01.png',
-  'img/avatars/user02.png',
-  'img/avatars/user03.png',
-  'img/avatars/user04.png',
-  'img/avatars/user05.png',
-  'img/avatars/user06.png',
-  'img/avatars/user07.png',
-  'img/avatars/user08.png',
-];
-
 const TITLES = [
   'Заголовок_1',
   'Заголовок_2',
@@ -31,7 +6,7 @@ const TITLES = [
   'Заголовок_5',
 ];
 
-const TYPES = [
+const HOUSES_TYPES = [
   'palace',
   'flat',
   'house',
@@ -39,13 +14,7 @@ const TYPES = [
   'hotel',
 ];
 
-const CHECKIN = [
-  '12:00',
-  '13:00',
-  '14:00',
-];
-
-const CHECKOUT = [
+const TIMES = [
   '12:00',
   '13:00',
   '14:00',
@@ -76,44 +45,58 @@ const PHOTOS = [
 
 const OBJECT_GENERATION_COUNT = 10;
 
-/*декомпозиции*/
-
-const getRandomArrayElement = function(elements) { //eslint ругается на стрелочную функцию в этой строке ¯\_(ツ)_/¯
-  return elements[getRandomNumber(0, elements.length - 1)];
+const getRandomNumber = (min, max) => {
+  const lower = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
+  const upper = Math.floor(Math.max(Math.abs(min), Math.abs(max)));
+  const result = Math.random() * (upper - lower + 1) + lower;
+  return Math.floor(result);
 };
 
+const getRandomFloat = (min, max, digits = 1) => {
+  const lower = Math.min(Math.abs(min), Math.abs(max));
+  const upper = Math.max(Math.abs(min), Math.abs(max));
+  const result = Math.random() * (upper - lower) + lower;
+  return result.toFixed(digits);
+};
+
+/*декомпозиции*/
+
+const getRandomArrayElement = (elements) => elements[getRandomNumber(0, elements.length - 1)];
+
 const getRandomArrayLenght = (elements) => {
-  const arrayLengh = getRandomNumber(1, elements.length);
+  const arrayLength = getRandomNumber(1, elements.length);
   const array = [];
-  for(let i = 0; i < arrayLengh; i++) {
-    array.push(elements[i]);
+  for(let item = 0; item < arrayLength; item++) {
+    array.push(elements[item]);
   }
   return array;
 };
 
 /*до кучи*/
 
-const createAdvert = function() {
+const createAdvert = () => {
+  const LAT = getRandomFloat(35.65000, 35.70000, 5);
+  const LNG = getRandomFloat(139.70000, 139.80000, 5);
   return {
-    autor: {
-      avatar: getRandomArrayElement(AVATARS),
+    author: {
+      avatar: `img/avatars/user${(String(0) + getRandomNumber(1, 8)).slice(0, 2)}.png`,
     },
     offer: {
       title: getRandomArrayElement(TITLES),
-      address: `${getRandomFloat(35.65000, 35.70000, 5)}, ${getRandomFloat(139.70000, 139.80000, 5)}`,
+      address: `${LAT}, ${LNG}`,
       price: getRandomNumber(500, 10000),
-      type: getRandomArrayElement(TYPES),
+      type: getRandomArrayElement(HOUSES_TYPES),
       rooms: getRandomNumber(1, 100),
       quests: getRandomNumber(1, 6),
-      checkin: getRandomArrayElement(CHECKIN),
-      checkout: getRandomArrayElement(CHECKOUT),
+      checkin: getRandomArrayElement(TIMES),
+      checkout: getRandomArrayElement(TIMES),
       features: getRandomArrayLenght(FEATURES),
       description: getRandomArrayElement(DESCRIPTIONS),
       photos: getRandomArrayLenght(PHOTOS),
     },
     location: {
-      lat: getRandomFloat(35.65000, 35.70000, 5),
-      lng: getRandomFloat(139.70000, 139.80000, 5),
+      lat: LAT,
+      lng: LNG,
     },
   };
 };
