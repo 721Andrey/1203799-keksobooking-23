@@ -63,7 +63,7 @@ const getRandomFloat = (min, max, digits = 1) => {
 
 const getRandomArrayElement = (elements) => elements[getRandomNumber(0, elements.length - 1)];
 
-const getRandomArrayLenght = (elements) => {
+const getRandomArrayLength = (elements) => {
   const arrayLength = getRandomNumber(1, elements.length);
   const array = [];
   for(let item = 0; item < arrayLength; item++) {
@@ -90,9 +90,9 @@ const createAdvert = () => {
       quests: getRandomNumber(1, 6),
       checkin: getRandomArrayElement(TIMES),
       checkout: getRandomArrayElement(TIMES),
-      features: getRandomArrayLenght(FEATURES),
+      features: getRandomArrayLength(FEATURES),
       description: getRandomArrayElement(DESCRIPTIONS),
-      photos: getRandomArrayLenght(PHOTOS),
+      photos: getRandomArrayLength(PHOTOS),
     },
     location: {
       lat: LAT,
