@@ -1,29 +1,105 @@
-// Задание 1
+const TITLES = [
+  'Заголовок_1',
+  'Заголовок_2',
+  'Заголовок_3',
+  'Заголовок_4',
+  'Заголовок_5',
+];
+
+const HOUSES_TYPES = [
+  'palace',
+  'flat',
+  'house',
+  'bungalow',
+  'hotel',
+];
+
+const TIMES = [
+  '12:00',
+  '13:00',
+  '14:00',
+];
+
+const FEATURES = [
+  'wifi',
+  'dishwasher',
+  'parking',
+  'washer',
+  'elevator',
+  'conditioner',
+];
+
+const DESCRIPTIONS = [
+  'Описание помещения_1',
+  'Описание помещения_2',
+  'Описание помещения_3',
+  'Описание помещения_4',
+  'Описание помещения_5',
+];
+
+const PHOTOS = [
+  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg',
+  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
+  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
+];
+
+const OBJECT_GENERATION_COUNT = 10;
 
 const getRandomNumber = (min, max) => {
-
-  if (min < 0 || max < 0) {
-    return 'Требуется ввести число из диапазона';
-  }
-  if (min >= max) {
-    return 'Меньшее число не может быть больше большего числа или равняться ему';
-  }
-  return Math.round(Math.random() * (max - min + 1)) + min;
+  const lower = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
+  const upper = Math.floor(Math.max(Math.abs(min), Math.abs(max)));
+  const result = Math.random() * (upper - lower + 1) + lower;
+  return Math.floor(result);
 };
 
-getRandomNumber(0, 10);
-
-// Задание 2
-
-const getCoordinate = (min, max, numberAfterDot) => {
-
-  if (min < 0 || max < 0 || numberAfterDot < 0) {
-    return 'Требуется ввести число из диапазона';
-  }
-  if (min >= max) {
-    return 'Меньшее число не может быть больше большего числа или равняться ему';
-  }
-  return (Math.random() * (max - min + 1) + min).toFixed(numberAfterDot);
+const getRandomFloat = (min, max, digits = 1) => {
+  const lower = Math.min(Math.abs(min), Math.abs(max));
+  const upper = Math.max(Math.abs(min), Math.abs(max));
+  const result = Math.random() * (upper - lower) + lower;
+  return result.toFixed(digits);
 };
 
-getCoordinate(0, 10, 1);
+/*декомпозиции*/
+
+const getRandomArrayElement = (elements) => elements[getRandomNumber(0, elements.length - 1)];
+
+const getRandomArrayLength = (elements) => {
+  const arrayLength = getRandomNumber(1, elements.length);
+  const array = [];
+  for(let item = 0; item < arrayLength; item++) {
+    array.push(elements[item]);
+  }
+  return array;
+};
+
+/*до кучи*/
+
+const createAdvert = () => {
+  const LAT = getRandomFloat(35.65000, 35.70000, 5);
+  const LNG = getRandomFloat(139.70000, 139.80000, 5);
+  return {
+    author: {
+      avatar: `img/avatars/user${(String(0) + getRandomNumber(1, 8)).slice(0, 2)}.png`,
+    },
+    offer: {
+      title: getRandomArrayElement(TITLES),
+      address: `${LAT}, ${LNG}`,
+      price: getRandomNumber(500, 10000),
+      type: getRandomArrayElement(HOUSES_TYPES),
+      rooms: getRandomNumber(1, 100),
+      quests: getRandomNumber(1, 6),
+      checkin: getRandomArrayElement(TIMES),
+      checkout: getRandomArrayElement(TIMES),
+      features: getRandomArrayLength(FEATURES),
+      description: getRandomArrayElement(DESCRIPTIONS),
+      photos: getRandomArrayLength(PHOTOS),
+    },
+    location: {
+      lat: LAT,
+      lng: LNG,
+    },
+  };
+};
+
+const objectGeneration = new Array(OBJECT_GENERATION_COUNT).fill(null).map(() => createAdvert());
+objectGeneration;
