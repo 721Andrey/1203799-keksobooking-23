@@ -9,6 +9,10 @@ const typesPremises = {
   palace: 'Дворец',
 };
 
+const PHOTO_WIDTH = '45';
+const PHOTO_HEIGTH = '40';
+const PHOTO_ALT = 'Фотография жилья';
+
 const objectGenerationCards = ({ author, offer }) => {
   const offerTitle = offerCards.querySelector('.popup__title');
   const offerAddress = offerCards.querySelector('.popup__text--address');
@@ -22,43 +26,39 @@ const objectGenerationCards = ({ author, offer }) => {
 
   // Заголовок
 
-  offerTitle.textContent = offer.title;
-  if (offer.title.length === 0) {
-    offerTitle.classList.add('visually-hidden');
+  if (offer.title.length) {
+    offerTitle.textContent = offer.title;
   }
 
   // Адрес
 
-  offerAddress.textContent = offer.address;
-  if (offer.address.length === 0) {
-    offerAddress.classList.add('visually-hidden');
+  if (offer.address.length) {
+    offerAddress.textContent = offer.address;
   }
 
   // Цена
 
-  offerPrice.textContent = `${offer.price} ₽/ночь`;
-  if (offer.price.length === 0) {
-    offerPrice.classList.add('visually-hidden');
+  if (offer.price) {
+    //когда добавляю offer.price.length - не генерируется число
+    //а добавляю offer.price.length !== 0 - генерируется. как так?
+    offerPrice.innerHTML = `${offer.price} <span>₽/ночь</span>`;
   }
 
   // Тип жилья
 
-  offerType.textContent = typesPremises[offer.type];
-  if (offer.type.length === 0) {
-    offerType.classList.add('visually-hidden');
+  if (offer.type.length) {
+    offerType.textContent = typesPremises[offer.type];
   }
 
   // Количество гостей и комнат
 
-  if (offer.rooms.length === 0 && offer.guests.length === 0) {
-    return offerCapacity.classList.add('visually-hidden');
-  } else {
+  if (offer.rooms && offer.guests) { //тут тоже с .length фокусы
     let roomsChange = 'комнат';
     let guestsChange = 'гостей';
-    if (offer.rooms.length === 1) {
+    if (offer.rooms === 1) {
       roomsChange = 'комната';
     }
-    if (offer.guests.length === 1) {
+    if (offer.guests === 1) {
       guestsChange = 'гостя';
     }
     offerCapacity.textContent = `${offer.rooms} ${roomsChange} для ${offer.guests} ${guestsChange}`;
@@ -66,14 +66,13 @@ const objectGenerationCards = ({ author, offer }) => {
 
   // Время
 
-  offerTimes.textContent = `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`;
-  if (offer.checkin.length === 0 && offer.checkout.length === 0) {
-    return offerTimes.classList.add('visually-hidden');
+  if (offer.checkin.length && offer.checkout.length) {
+    offerTimes.textContent = `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`;
   }
 
   // Удобства
 
-  const featureList = offer.features.map((feature) => {
+  const getFeatureList = offer.features.map((feature) => {
     const newFeature = document.createElement('li');
     newFeature.classList.add('popup__feature', `popup__feature--${feature}`);
     return newFeature;
@@ -83,44 +82,41 @@ const objectGenerationCards = ({ author, offer }) => {
     offerFeatures.removeChild(offerFeatures.firstChild);
   }
 
-  featureList.map((feature) => offerFeatures.appendChild(feature));
-  if (featureList.length === 0) {
-    offerFeatures.classList.add('visually-hidden');
+  if (getFeatureList.length) {
+    getFeatureList.map((feature) => offerFeatures.appendChild(feature));
   }
 
   // Описание
 
-  offerDescription.textContent = offer.description;
-  if (offer.description.length === 0) {
-    offerDescription.classList.add('visually-hidden');
+  if (offer.description.length) {
+    offerDescription.textContent = offer.description;
   }
 
   // Фоточки
 
-  const photoList = offer.photos.map((photo) => {
+  const getPhotoList = offer.photos.map((photo) => {
     const newPhoto = document.createElement('img');
     newPhoto.classList.add('popup__photo');
     newPhoto.src = photo;
-    newPhoto.width = '45';
-    newPhoto.height = '40';
-    newPhoto.alt = 'Фотография жилья';
+    newPhoto.width = PHOTO_WIDTH;
+    newPhoto.height = PHOTO_HEIGTH;
+    newPhoto.alt = PHOTO_ALT;
     return newPhoto;
   });
 
   while (offerPhotos.firstChild) {
     offerPhotos.removeChild(offerPhotos.firstChild);
   }
-  photoList.map((photo) => offerPhotos.appendChild(photo));
-  if (photoList.length === 0) {
-    offerPhotos.classList.add('visually-hidden');
+
+  if (getPhotoList.length) {
+    getPhotoList.map((photo) => offerPhotos.appendChild(photo));
   }
 
   // Аватарка
 
-  const avatar = offerCards.querySelector('.popup__avatar');
-  avatar.src = author.avatar;
-  if (author.avatar.length === 0) {
-    avatar.classList.add('visually-hidden');
+  if (author.avatar.length) {
+    const avatar = offerCards.querySelector('.popup__avatar');
+    avatar.src = author.avatar;
   }
 
   return offerCards;
