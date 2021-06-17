@@ -45,8 +45,6 @@ const PHOTOS = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
 ];
 
-const OBJECT_GENERATION_COUNT = 10;
-
 const createAdvert = () => {
   const LAT = getRandomFloat(35.65000, 35.70000, 5);
   const LNG = getRandomFloat(139.70000, 139.80000, 5);
@@ -60,7 +58,7 @@ const createAdvert = () => {
       price: getRandomNumber(500, 10000),
       type: getRandomArrayElement(HOUSES_TYPES),
       rooms: getRandomNumber(1, 100),
-      quests: getRandomNumber(1, 6),
+      guests: getRandomNumber(1, 6),
       checkin: getRandomArrayElement(TIMES),
       checkout: getRandomArrayElement(TIMES),
       features: getRandomArrayLength(FEATURES),
@@ -74,6 +72,6 @@ const createAdvert = () => {
   };
 };
 
-const objectGeneration = new Array(OBJECT_GENERATION_COUNT).fill(null).map(() => createAdvert());
+const objectGeneration = (count) => new Array(count).fill(null).map(() => createAdvert());
 
 export {objectGeneration};
