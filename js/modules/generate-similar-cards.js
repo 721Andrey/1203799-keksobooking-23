@@ -39,8 +39,6 @@ const objectGenerationCards = ({ author, offer }) => {
   // Цена
 
   if (offer.price) {
-    //когда добавляю offer.price.length - не генерируется число
-    //а добавляю offer.price.length !== 0 - генерируется. как так?
     offerPrice.innerHTML = `${offer.price} <span>₽/ночь</span>`;
   }
 
@@ -52,7 +50,7 @@ const objectGenerationCards = ({ author, offer }) => {
 
   // Количество гостей и комнат
 
-  if (offer.rooms && offer.guests) { //тут тоже с .length фокусы
+  if (offer.rooms && offer.guests) {
     let roomsChange = 'комнат';
     let guestsChange = 'гостей';
     if (offer.rooms === 1) {
