@@ -27,7 +27,7 @@ const form = () => {
 
   // Заголовок объявления
 
-  const getTitleValidity = () => {
+  titleForm.addEventListener('input', () => {
     const valueLength = titleForm.value.length;
     if (valueLength < TITLE_MIN_LENGTH) {
       titleForm.setCustomValidity(`Маловато будет. Необходимое количество символов еще вот столько: ${ TITLE_MIN_LENGTH - valueLength }.`);
@@ -37,13 +37,11 @@ const form = () => {
       titleForm.setCustomValidity('');
     }
     titleForm.reportValidity();
-  };
-
-  titleForm.addEventListener('input', getTitleValidity);
+  });
 
   // Цена за ночь
 
-  const getPriceValidity = () => {
+  priceForm.addEventListener('input', () => {
     const value = Number(priceForm.value);
     const housingType = typeForm.value;
     if (value < minPrice[housingType]) {
@@ -54,41 +52,33 @@ const form = () => {
       priceForm.setCustomValidity('');
     }
     priceForm.reportValidity();
-  };
-
-  priceForm.addEventListener('input', getPriceValidity);
+  });
 
   // Плейсхолдер
 
-  const getPriceinPlaceholder = () => {
+  typeForm.addEventListener('input', () => {
     priceForm.placeholder = minPrice[typeForm.value];
-  };
-
-  typeForm.addEventListener('input', getPriceinPlaceholder);
+  });
 
   // Количество комнат и мест
 
-  const changeGuestsByRooms = () => {
+  roomForm.addEventListener('input', () => {
     const value = roomForm.value;
     const status = roomsAndGuests[value];
     capacityForm.querySelectorAll('option').forEach((item) => {
       item.disabled = status(Number(item.value));
     });
-  };
-
-  roomForm.addEventListener('input', changeGuestsByRooms);
+  });
 
   // Синхронизация времени
 
-  const getTimeCheckin = () => {
+  timeCheckin.addEventListener('input', () => {
     timeCheckout.value = timeCheckin.value;
-  };
-  timeCheckin.addEventListener('input', getTimeCheckin);
+  });
 
-  const getTimeCheckout = () => {
+  timeCheckout.addEventListener('input', () => {
     timeCheckin.value = timeCheckout.value;
-  };
-  timeCheckout.addEventListener('input', getTimeCheckout);
+  });
 
 };
 
