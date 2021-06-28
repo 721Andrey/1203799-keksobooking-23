@@ -40,10 +40,10 @@ L.tileLayer(
 ).addTo(map);
 
 const pinIcon = L.icon({
-  iconUrl: '../../img/main-pin.svg',
+  iconUrl: 'img/main-pin.svg',
   iconSize: [pinSize.width, pinSize.height],
   iconAnchor: [pinSize.width / 2, pinSize.height],
-  shadowUrl: '../../leaflet/images/marker-shadow.png',
+  shadowUrl: 'leaflet/images/marker-shadow.png',
   shadowSize: [pinSize.width * 2, pinSize.height * 2],
   shadowAnchor: [pinSize.width / 2, pinSize.height * 2],
 });
@@ -83,10 +83,10 @@ resetButton.addEventListener('click', () => {
 generations.forEach((point) => {
   const {location: {lat, lng}} = point;
   const icon = L.icon({
-    iconUrl: '../../img/pin.svg',
+    iconUrl: 'img/pin.svg',
     iconSize: [iconSize.width, iconSize.height],
     iconAnchor: [iconSize.width/2, iconSize.height],
-    shadowUrl: '../../leaflet/images/marker-shadow.png',
+    shadowUrl: 'leaflet/images/marker-shadow.png',
     shadowSize: [iconSize.width * 2, iconSize.height * 2],
     shadowAnchor: [iconSize.width / 2, iconSize.height * 2],
   });
