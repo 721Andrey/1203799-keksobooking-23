@@ -20,4 +20,6 @@ const getIncludedForm = () => {
   mapFiltersFieldset.disabled = false;
 };
 
-export {getDisabledForm, getIncludedForm};
+getDisabledForm();
+
+export {getIncludedForm, getDisabledForm};
