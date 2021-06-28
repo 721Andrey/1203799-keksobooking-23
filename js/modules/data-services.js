@@ -1,5 +1,6 @@
 import {getRandomNumber, getRandomFloat, getRandomArrayElement, getRandomArrayLength} from './utils.js';
 
+const OBJECT_GENERATION_COUNT = 10;
 const TITLES = [
   'Заголовок_1',
   'Заголовок_2',
@@ -73,5 +74,7 @@ const createAdvert = () => {
 };
 
 const objectGeneration = (count) => new Array(count).fill(null).map(() => createAdvert());
+const generations = objectGeneration(OBJECT_GENERATION_COUNT);
 
 export {objectGeneration};
+export {generations};
