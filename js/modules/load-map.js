@@ -1,12 +1,13 @@
-import {generations} from './data-services.js';
 import {objectGenerationCards} from './generate-similar-cards.js';
 import {getDisabledForm, getIncludedForm} from './form-activation.js';
 
 getDisabledForm();
 
 const address = document.querySelector('#address');
-const resetButton = document.querySelector('.ad-form__reset');
 const DECIMAL_DIGITS = 5;
+const ZOOM = 13;
+const TILE_LAYER = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+const ATTRIBUTION = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 
 const FIND_THE_CENTER = {
   lat: 35.68272,
@@ -30,12 +31,12 @@ const map = L.map('map-canvas')
   .setView({
     lat: FIND_THE_CENTER.lat,
     lng: FIND_THE_CENTER.lng,
-  }, 13);
+  }, ZOOM);
 
 L.tileLayer(
-  'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+  TILE_LAYER,
   {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    attribution: ATTRIBUTION,
   },
 ).addTo(map);
 
@@ -61,51 +62,59 @@ const pinMarker = L.marker(
 
 pinMarker.addTo(map);
 
+const getAddress = (lat, lng) => address.value = `
+  ${lat.toFixed(DECIMAL_DIGITS)}, ${lng.toFixed(DECIMAL_DIGITS)}
+`;
+getAddress(FIND_THE_CENTER.lat, FIND_THE_CENTER.lng);
+
 pinMarker.on('moveend', (evt) => {
   const {lat, lng} = evt.target.getLatLng();
-  address.value = `
-  ${lat.toFixed(DECIMAL_DIGITS)}, ${lng.toFixed(DECIMAL_DIGITS)}
-  `;
+  getAddress(lat, lng);
 });
 
-resetButton.addEventListener('click', () => {
+const setInitialAddress = () => {
+  const { lat, lng } = FIND_THE_CENTER;
   pinMarker.setLatLng({
-    lat: FIND_THE_CENTER.lat,
-    lng: FIND_THE_CENTER.lng,
+    lat,
+    lng,
   });
 
   map.setView({
-    lat: FIND_THE_CENTER.lat,
-    lng: FIND_THE_CENTER.lng,
-  }, 13);
-});
+    lat,
+    lng,
+  }, ZOOM);
+};
 
-generations.forEach((point) => {
-  const {location: {lat, lng}} = point;
-  const icon = L.icon({
-    iconUrl: 'img/pin.svg',
-    iconSize: [iconSize.width, iconSize.height],
-    iconAnchor: [iconSize.width/2, iconSize.height],
-    shadowUrl: 'leaflet/images/marker-shadow.png',
-    shadowSize: [iconSize.width * 2, iconSize.height * 2],
-    shadowAnchor: [iconSize.width / 2, iconSize.height * 2],
-  });
+const setPointsMap = (generations) => {
+  generations.forEach((point) => {
+    const {location: {lat, lng}} = point;
+    const icon = L.icon({
+      iconUrl: 'img/pin.svg',
+      iconSize: [iconSize.width, iconSize.height],
+      iconAnchor: [iconSize.width/2, iconSize.height],
+      shadowUrl: 'leaflet/images/marker-shadow.png',
+      shadowSize: [iconSize.width * 2, iconSize.height * 2],
+      shadowAnchor: [iconSize.width / 2, iconSize.height * 2],
+    });
 
-  const marker = L.marker(
-    {
-      lat,
-      lng,
-    },
-    {
-      icon,
-    },
-  );
-
-  marker
-    .addTo(map)
-    .bindPopup(
-      objectGenerationCards(point),
+    const marker = L.marker(
       {
-        keepInView: true,
-      });
-});
+        lat,
+        lng,
+      },
+      {
+        icon,
+      },
+    );
+
+    marker
+      .addTo(map)
+      .bindPopup(
+        objectGenerationCards(point),
+        {
+          keepInView: true,
+        });
+  });
+};
+
+export {setInitialAddress, setPointsMap};
